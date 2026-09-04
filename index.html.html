@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de Inspeção N1 – AMV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EEF1F0;
+    --surface: #FFFFFF;
+    --line: #D6DCDA;
+    --ink: #16232B;
+    --ink-soft: #58696E;
+    --brand: #2D6E7E;
+    --brand-dark: #1E4F5C;
+    --ok: #3C8558;
+    --ok-bg: #E4F2E8;
+    --nok: #C1432E;
+    --nok-bg: #FBE7E2;
+    --na-bg: #E9ECEC;
+    --na: #58696E;
+    --warn-bg: #FFF4E0;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 100px;
+  }
+  header{
+    background: var(--brand-dark);
+    color: #fff;
+    padding: 22px 18px 26px;
+  }
+  header h1{
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: 0.3px;
+    margin: 0 0 2px;
+  }
+  header p{
+    margin:0;
+    font-size: 13px;
+    color: #BFD6DC;
+  }
+  main{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  section.card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 16px;
+    margin-bottom: 14px;
+  }
+  section.card h2{
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--brand-dark);
+    margin: 0 0 4px;
+  }
+  section.card .hint{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .field{ margin-bottom: 12px; }
+  .field label{
+    display:block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .field input[type=text], .field input[type=tel], .field textarea{
+    width: 100%;
+    padding: 10px 11px;
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--ink);
+    background: #fff;
+  }
+  .field input:focus, .field textarea:focus{
+    outline: none;
+    border-color: var(--brand);
+  }
+  .grid2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12px;
+  }
+  textarea{ min-height: 64px; resize: vertical; width: 100%; padding: 10px 11px; border: 1.5px solid var(--line); border-radius: 7px; font-size: 15px; font-family: inherit; color: var(--ink); }
+
+  .item-row{
+    border-top: 1px solid var(--line);
+    padding: 14px 0;
+  }
+  .item-row:first-of-type{ border-top: none; padding-top: 4px; }
+  .item-row .item-title{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display:flex;
+    gap: 8px;
+  }
+  .item-row .item-num{
+    color: var(--brand);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    min-width: 20px;
+  }
+  .side-row{
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .side-row .side-label{
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .seg{
+    display: flex;
+    gap: 6px;
+  }
+  .seg button{
+    flex:1;
+    border: 1.5px solid var(--line);
+    background: #fff;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .seg button.active[data-v="OK"]{ background: var(--ok-bg); border-color: var(--ok); color: var(--ok); }
+  .seg button.active[data-v="NOK"]{ background: var(--nok-bg); border-color: var(--nok); color: var(--nok); }
+  .seg button.active[data-v="NA"]{ background: var(--na-bg); border-color: var(--na); color: var(--na); }
+  .obs-input{
+    margin-top: 6px;
+  }
+  .obs-input input{
+    width:100%;
+    padding: 7px 9px;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-family: inherit;
+  }
+
+  .item-sides{
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .dorm-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .dorm-row{
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    background: #fff;
+  }
+  .dorm-label{
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+  .dorm-label.active{
+    background: var(--warn-bg);
+    color: #8A5A0F;
+  }
+  .stepper{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .step-btn{
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1.5px solid var(--line);
+    background: var(--na-bg);
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+  }
+  .step-input{
+    width: 34px;
+    text-align: center;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    padding: 5px 2px;
+    font-size: 14px;
+    font-family: inherit;
+  }
+
+  @media (min-width: 700px){
+    #identGrid{ grid-template-columns: repeat(3, 1fr); }
+    .item-sides{ flex-direction: row; gap: 20px; }
+    .item-sides .side-row{ flex: 1; }
+    .dorm-grid{ grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 420px){
+    #identGrid{ grid-template-columns: 1fr; }
+  }
+
+  .link-btn{
+    background: none;
+    border: none;
+    color: var(--brand);
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+    padding: 10px 0 0;
+    font-family: inherit;
+  }
+  .comment-box{
+    position: relative;
+    margin-top: 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    background: #FAFBFB;
+  }
+  .comment-box textarea{
+    width: 100%;
+    min-height: 90px;
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    padding: 9px 10px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .comment-close{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--na-bg);
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .char-count{
+    margin: 4px 2px 0;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  .parafuso-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .parafuso-num{
+    border: 1.5px solid var(--line);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--ink);
+    padding: 10px 4px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Barlow Condensed', sans-serif;
+    cursor: pointer;
+    text-align: center;
+  }
+  .parafuso-num.active{
+    background: var(--nok-bg);
+    border-color: var(--nok);
+    color: var(--nok);
+  }
+  @media (min-width: 700px){
+    .parafuso-grid{ grid-template-columns: repeat(8, 1fr); }
+  }
+
+  footer{
+    position: fixed;
+    bottom: 0; left:0; right:0;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    padding: 12px 16px;
+    display:flex;
+    gap: 10px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  footer button{
+    flex:1;
+    padding: 13px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    border: none;
+  }
+  #exportBtn{ background: var(--brand); color: #fff; }
+  #resetBtn{ background: #fff; color: var(--nok); border: 1.5px solid var(--nok-bg); }
+  #status{
+    text-align:center;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin: -4px 0 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Ficha de Inspeção N1 — AMV</h1>
+  <p>Preenchimento digital · exporta como JSON</p>
+</header>
+
+<main>
+
+  <section class="card">
+    <h2>Identificação</h2>
+    <p class="hint">Data aceita apenas números (ex: 31082026)</p>
+    <div class="grid2" id="identGrid"></div>
+  </section>
+
+  <section class="card">
+    <h2>Itens de inspeção</h2>
+    <p class="hint">Marque a condição de cada lado quando aplicável</p>
+    <div id="itensList"></div>
+  </section>
+
+  <section class="card">
+    <h2>Comentários e materiais para recolher</h2>
+    <textarea id="comentarios" placeholder="Descreva materiais a recolher (dormente, jacaré, agulha, etc.) e demais observações..."></textarea>
+  </section>
+
+  <section class="card">
+    <h2>Dormentes danificados</h2>
+    <p class="hint">Toque para marcar os tamanhos danificados (pode marcar vários)</p>
+    <div class="dorm-grid" id="dormentesGrid"></div>
+    <button type="button" id="toggleComentarioDormente" class="link-btn">+ Adicionar comentário</button>
+    <div id="comentarioDormenteBox" class="comment-box" hidden>
+      <button type="button" id="closeComentarioDormente" class="comment-close">×</button>
+      <textarea id="comentarioDormente" maxlength="3000" placeholder="Comentário sobre os dormentes danificados..."></textarea>
+      <p class="char-count"><span id="comentarioDormenteCount">0</span>/3000</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Parafusos danificados do jacaré</h2>
+    <p class="hint">Toque nos números danificados (pode marcar vários)</p>
+    <div class="parafuso-grid" id="parafusoGrid"></div>
+  </section>
+
+</main>
+
+<footer>
+  <button type="button" id="resetBtn">Limpar</button>
+  <button type="button" id="exportBtn">Exportar JSON</button>
+</footer>
+<div style="max-width:720px;margin:0 auto;padding:0 16px;"><p id="status"></p></div>
+
+<script>
+const IDENT_FIELDS = [
+  {key:'data', label:'Data', numeric:true, maxlength:10, placeholder:'DD/MM/AAAA'},
+  {key:'ordem', label:'Ordem'},
+  {key:'responsavel', label:'Responsável'},
+  {key:'matricula', label:'Matrícula'},
+  {key:'linha', label:'Linha'},
+  {key:'local', label:'Local'},
+  {key:'mch', label:'MCH'},
+  {key:'desvio', label:'Desvio'},
+  {key:'config_mch', label:'Config. MCH'},
+  {key:'perfil_tr', label:'Perfil de TR.'},
+  {key:'tam_ag', label:'Tam. AG.'},
+  {key:'n_jacare', label:'Nº Jacaré'},
+  {key:'tam_ct', label:'Tam. CT'},
+  {key:'qnt_placa_ct', label:'Qnt. Placa CT'},
+  {key:'tipo_ct', label:'Tipo CT'},
+];
+
+const ITENS = [
+  "Placa de identificação da MCH",
+  "Limpeza do refletivo",
+  "Condições das agulhas",
+  "Alinhamento de MCH e berço",
+  "Conferir fixações e isolação das placas bitoladoras",
+  "Alinhamento das agulhas",
+  "Condições do trilho de encosto (escoamento, achatamento e etc.)",
+  "Fixações de talas instaladas no AMV",
+  "Apoio da agulha nas placas (a cada 3 placas uma deve estar apoiada)",
+  "UIC - apoio da agulha nas placas (verificar marcas nas placas)",
+  "Folga da junta do coice",
+  "Parafuso do coice",
+  "Cupilhas dos parafusos",
+  "Desgaste nos trilho intermediário",
+  "Fixação de placas, grampos, escoras e parafusos",
+  "Isoladores de grampo e palmilha isolante",
+  "Parafusos do jacaré",
+  "Condições do jacaré (trinca, fissura, rebarba, amassamento)",
+  "Condições do contra trilho (trinca, fissura, rebarba, amassamento)",
+  "Condições das JICs",
+  "Condição lastro",
+  "Socaria (em todo o AMV)",
+];
+
+const DORMENTES_TAMANHOS = [280,300,320,340,360,380,400,420,440,460,480,500,520,540];
+
+const state = {
+  ficha: {},
+  itens: {},        // { n: {direita:'', esquerda:'', observacao:''} }
+  dormentes: {},     // { tamanho: quantidade }
+  parafusos: new Set(), // números selecionados (1-24)
+};
+
+// ---------- Identificação ----------
+const identGrid = document.getElementById('identGrid');
+IDENT_FIELDS.forEach(f=>{
+  const div = document.createElement('div');
+  div.className = 'field';
+  div.innerHTML = `<label for="f_${f.key}">${f.label}</label>
+    <input type="tel" id="f_${f.key}" ${f.numeric? 'inputmode="numeric" pattern="[0-9]*"':''} ${f.maxlength? `maxlength="${f.maxlength}"`:''} placeholder="${f.placeholder||''}">`;
+  identGrid.appendChild(div);
+  const input = div.querySelector('input');
+  if(!f.numeric) input.type = 'text';
+  input.addEventListener('input', ()=>{
+    if(f.key === 'data'){
+      let digits = input.value.replace(/\D/g,'').slice(0,8);
+      let formatted = digits;
+      if(digits.length > 4) formatted = digits.slice(0,2) + '/' + digits.slice(2,4) + '/' + digits.slice(4);
+      else if(digits.length > 2) formatted = digits.slice(0,2) + '/' + digits.slice(2);
+      input.value = formatted;
+    } else if(f.numeric){
+      input.value = input.value.replace(/\D/g,'');
+    }
+    state.ficha[f.key] = input.value;
+  });
+});
+
+// ---------- Itens de inspeção ----------
+const ITENS_COMUM = new Set([1,4,5,6,17,18,21,22]);
+
+const itensList = document.getElementById('itensList');
+ITENS.forEach((nome, idx)=>{
+  const n = idx+1;
+  const isComum = ITENS_COMUM.has(n);
+  state.itens[n] = isComum ? {comum:'', observacao:''} : {direita:'', esquerda:'', observacao:''};
+  const row = document.createElement('div');
+  row.className = 'item-row';
+
+  const segHTML = (side, label) => `
+    <div class="side-row">
+      <span class="side-label">${label}</span>
+      <div class="seg" data-item="${n}" data-side="${side}">
+        <button type="button" data-v="OK">OK</button>
+        <button type="button" data-v="NOK">NOK</button>
+        <button type="button" data-v="NA">N/A</button>
+      </div>
+    </div>`;
+
+  row.innerHTML = `
+    <div class="item-title"><span class="item-num">${n}.</span><span>${nome}</span></div>
+    <div class="item-sides">
+      ${isComum ? segHTML('comum','Comum') : segHTML('direita','Direita') + segHTML('esquerda','Esquerda')}
+    </div>
+    <div class="obs-input">
+      <input type="text" placeholder="Observação (opcional)" data-item="${n}" data-field="observacao">
+    </div>
+  `;
+  itensList.appendChild(row);
+});
+
+itensList.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.seg button');
+  if(!btn) return;
+  const seg = btn.parentElement;
+  const n = seg.dataset.item, side = seg.dataset.side, v = btn.dataset.v;
+  seg.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  state.itens[n][side] = v;
+});
+
+itensList.addEventListener('input', (e)=>{
+  const inp = e.target.closest('input[data-field="observacao"]');
+  if(!inp) return;
+  state.itens[inp.dataset.item].observacao = inp.value;
+});
+
+// ---------- Comentários ----------
+document.getElementById('comentarios').addEventListener('input', e=>{
+  state.comentarios = e.target.value;
+});
+
+// ---------- Dormentes ----------
+const dormentesGrid = document.getElementById('dormentesGrid');
+DORMENTES_TAMANHOS.forEach(t=>{
+  state.dormentes[t] = 0;
+  const row = document.createElement('div');
+  row.className = 'dorm-row';
+  row.innerHTML = `
+    <button type="button" class="dorm-label" data-t="${t}">${t}</button>
+    <div class="stepper">
+      <button type="button" class="step-btn step-minus" data-t="${t}">−</button>
+      <input type="tel" inputmode="numeric" class="step-input" data-t="${t}" value="0">
+      <button type="button" class="step-btn step-plus" data-t="${t}">+</button>
+    </div>
+  `;
+  dormentesGrid.appendChild(row);
+});
+
+function setDormenteQtd(t, qtd){
+  qtd = Math.max(0, qtd);
+  state.dormentes[t] = qtd;
+  const input = dormentesGrid.querySelector(`.step-input[data-t="${t}"]`);
+  const label = dormentesGrid.querySelector(`.dorm-label[data-t="${t}"]`);
+  input.value = qtd;
+  label.classList.toggle('active', qtd > 0);
+}
+
+dormentesGrid.addEventListener('click', (e)=>{
+  const t = e.target.dataset.t;
+  if(!t) return;
+  if(e.target.classList.contains('dorm-label')){
+    if(state.dormentes[t] === 0) setDormenteQtd(t, 1);
+  } else if(e.target.classList.contains('step-plus')){
+    setDormenteQtd(t, state.dormentes[t] + 1);
+  } else if(e.target.classList.contains('step-minus')){
+    setDormenteQtd(t, state.dormentes[t] - 1);
+  }
+});
+
+dormentesGrid.addEventListener('input', (e)=>{
+  if(!e.target.classList.contains('step-input')) return;
+  const t = e.target.dataset.t;
+  const v = parseInt(e.target.value.replace(/\D/g,''), 10);
+  setDormenteQtd(t, isNaN(v) ? 0 : v);
+});
+
+const toggleComentarioBtn = document.getElementById('toggleComentarioDormente');
+const comentarioBox = document.getElementById('comentarioDormenteBox');
+const comentarioTextarea = document.getElementById('comentarioDormente');
+const comentarioCount = document.getElementById('comentarioDormenteCount');
+
+
+toggleComentarioBtn.addEventListener('click', ()=>{
+  comentarioBox.hidden = false;
+  toggleComentarioBtn.hidden = true;
+  comentarioTextarea.focus();
+});
+document.getElementById('closeComentarioDormente').addEventListener('click', ()=>{
+  comentarioBox.hidden = true;
+  toggleComentarioBtn.hidden = false;
+});
+comentarioTextarea.addEventListener('input', ()=>{
+  state.dormentes_comentario = comentarioTextarea.value;
+  comentarioCount.textContent = comentarioTextarea.value.length;
+});
+
+// ---------- Parafusos ----------
+const parafusoGrid = document.getElementById('parafusoGrid');
+for(let i=1; i<=24; i++){
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'parafuso-num';
+  btn.textContent = i;
+  btn.dataset.n = i;
+  parafusoGrid.appendChild(btn);
+}
+parafusoGrid.addEventListener('click', e=>{
+  const btn = e.target.closest('.parafuso-num');
+  if(!btn) return;
+  const n = btn.dataset.n;
+  btn.classList.toggle('active');
+  if(state.parafusos.has(n)) state.parafusos.delete(n); else state.parafusos.add(n);
+});
+
+// ---------- Exportar / Limpar ----------
+function genId(){
+  return (crypto.randomUUID ? crypto.randomUUID() : 'ficha-' + Date.now());
+}
+
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const fichaId = genId();
+
+  const itens_inspecao = ITENS.map((nome, idx)=>{
+    const n = idx+1;
+    const it = state.itens[n];
+    const isComum = ITENS_COMUM.has(n);
+    return {
+      ficha_id: fichaId,
+      item_numero: n,
+      item_nome: nome,
+      tipo: isComum ? 'comum' : 'duplo',
+      direita: isComum ? null : it.direita,
+      esquerda: isComum ? null : it.esquerda,
+      comum: isComum ? it.comum : null,
+      observacao: it.observacao
+    };
+  });
+
+  const dormentes_danificados = Object.entries(state.dormentes)
+    .filter(([t,q]) => q > 0)
+    .sort((a,b)=>Number(a[0])-Number(b[0]))
+    .map(([t,q])=>({ ficha_id: fichaId, tamanho: Number(t), quantidade: q }));
+
+  const dormentes_comentario = state.dormentes_comentario || '';
+
+  const parafusos_danificados = Array.from(state.parafusos)
+    .sort((a,b)=>Number(a)-Number(b))
+    .map(num=>({ ficha_id: fichaId, numero: num }));
+
+  const output = {
+    ficha: { id: fichaId, ...state.ficha },
+    itens_inspecao,
+    dormentes_danificados,
+    dormentes_comentario,
+    parafusos_danificados,
+    comentarios_materiais: state.comentarios || ''
+  };
+
+  const blob = new Blob([JSON.stringify(output, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const dataStr = state.ficha.data || 'sem_data';
+  a.href = url;
+  a.download = `ficha_${dataStr}_${fichaId.slice(0,8)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  document.getElementById('status').textContent = 'Exportado: ' + a.download;
+});
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(!confirm('Limpar todos os campos preenchidos?')) return;
+  location.reload();
+});
+</script>
+
+</body>
+</html>
