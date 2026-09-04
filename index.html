@@ -654,9 +654,13 @@ document.getElementById('exportBtn').addEventListener('click', ()=>{
   const blob = new Blob([JSON.stringify(output, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  const dataStr = state.ficha.data || 'sem_data';
+  const sanitize = (s) => (s || '').replace(/[\\/:*?"<>|]/g, '-').trim();
+  const dataStr = sanitize(state.ficha.data).replace(/\//g,'-') || 'sem-data';
+  const ordemStr = sanitize(state.ficha.ordem) || 'sem-ordem';
+  const hoje = new Date();
+  const horaStr = String(hoje.getHours()).padStart(2,'0') + String(hoje.getMinutes()).padStart(2,'0');
   a.href = url;
-  a.download = `ficha_${dataStr}_${fichaId.slice(0,8)}.json`;
+  a.download = `EI_${dataStr}_${ordemStr}_${horaStr}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
